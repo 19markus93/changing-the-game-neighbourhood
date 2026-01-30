@@ -257,12 +257,13 @@ section h3 {
 #board-towers {
     position: absolute;
     top: 6%;      /* Distance from top edge */
-    left: 4%;     /* Distance from left edge */
+    left: 1%;     /* Distance from left edge */
     background: rgba(100, 100, 100, 0.9);
     padding: 10px 15px;
     border-radius: 8px;
     z-index: 5;
     min-width: 150px;
+    font-size: 0.75em;
 }
 
 /* Kosten Display (separate box) */
@@ -276,6 +277,7 @@ section h3 {
     border-radius: 8px;
     z-index: 5;
     min-width: 150px;
+    font-size: 0.75em;
 }
 
 .board-tower-item {
@@ -306,14 +308,6 @@ section h3 {
 .tower-unit {
     color: rgba(255,255,255,0.7);
     font-size: 0.9em;
-}
-
-.tower-breakdown {
-    display: block;
-    font-size: 0.75em;
-    color: rgba(255,255,255,0.8);
-    margin-top: 2px;
-    line-height: 1.3;
 }
 
 /* Zielkarten Container - positioned on board */
@@ -400,6 +394,7 @@ section h3 {
     border-radius: 8px;
     z-index: 5;
     min-width: 160px;
+    font-size: 0.75em;
 }
 
 #current-values h4 {
@@ -414,50 +409,11 @@ section h3 {
     font-size: 0.85em;
 }
 
-/* Tower Breakdown Display - positioned on board */
-#tower-breakdown {
-    position: absolute;
-    top: 42%;
-    left: 6%;
-    background: rgba(245, 245, 245, 0.95);
-    padding: 10px 12px;
-    border-radius: 8px;
-    z-index: 5;
-    min-width: 200px;
-    font-size: 0.75em;
-    border: 2px solid #ddd;
-}
-
-#tower-breakdown .breakdown-title {
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 6px;
-    padding-bottom: 4px;
-    border-bottom: 1px solid #ddd;
-}
-
-#tower-breakdown .tower-detail {
-    padding: 3px 0;
-    display: flex;
-    flex-direction: column;
-}
-
-#tower-breakdown .tower-name {
-    font-weight: bold;
-    color: #555;
-}
-
-#tower-breakdown .tower-stones {
-    color: #666;
-    font-size: 0.95em;
-    margin-left: 8px;
-}
-
 /* CO2 Impact Display - positioned on board */
 #co2-impact {
     position: absolute;
-    top: 62%;
-    left: 6%;
+    top: 25%;
+    left: 22%;
     background: rgba(245, 245, 245, 0.95);
     padding: 8px 12px;
     border-radius: 8px;
@@ -1007,6 +963,26 @@ section h3 {
     #game-board {
         max-width: 1000px;
     }
+
+    #board-towers,
+    #board-kosten,
+    #current-values,
+    #co2-impact {
+        font-size: 0.7em;
+        padding: 8px 12px;
+        min-width: 120px;
+    }
+}
+
+@media (max-width: 1200px) {
+    #board-towers,
+    #board-kosten,
+    #current-values,
+    #co2-impact {
+        font-size: 0.68em;
+        padding: 6px 10px;
+        min-width: 110px;
+    }
 }
 
 @media (max-width: 1024px) {
@@ -1020,6 +996,23 @@ section h3 {
 
     .tower {
         min-height: 200px;
+    }
+
+    #board-towers,
+    #board-kosten,
+    #current-values,
+    #co2-impact {
+        font-size: 0.65em;
+        padding: 5px 8px;
+        min-width: 100px;
+    }
+
+    .board-tower-item {
+        padding: 2px 0;
+    }
+
+    .tower-label {
+        min-width: 55px;
     }
 }
 
@@ -1065,6 +1058,68 @@ section h3 {
 
     .tower {
         min-height: 150px;
+    }
+
+    #board-towers,
+    #board-kosten,
+    #current-values,
+    #co2-impact {
+        font-size: 0.55em;
+        padding: 4px 6px;
+        min-width: 80px;
+        border-radius: 5px;
+    }
+
+    #board-towers {
+        top: 2%;
+        left: 1%;
+    }
+
+    #board-kosten {
+        top: 2%;
+        right: 1%;
+    }
+
+    #current-values {
+        top: 18%;
+        left: 1%;
+    }
+
+    #co2-impact {
+        top: 18%;
+        left: 15%;
+    }
+
+    .board-tower-item {
+        padding: 1px 0;
+        gap: 1px;
+    }
+
+    .tower-label {
+        min-width: 45px;
+    }
+
+    .tower-value {
+        font-size: 1em;
+    }
+}
+
+@media (max-width: 480px) {
+    #board-towers,
+    #board-kosten,
+    #current-values,
+    #co2-impact {
+        font-size: 0.45em;
+        padding: 3px 4px;
+        min-width: 60px;
+    }
+
+    .tower-label {
+        min-width: 35px;
+    }
+
+    #co2-impact {
+        left: 12%;
     }
 }
 
