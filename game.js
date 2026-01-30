@@ -1942,6 +1942,16 @@ function getTotalUberschuss() {
     return total;
 }
 
+// Helper function to get effective CO2 for GRID_POWER based on active policy cards
+function getEffectiveGridPowerCO2() {
+    if (gameState.playedCards['75-prozent-erneuerbare']) {
+        return 2;
+    } else if (gameState.playedCards['kohleausstieg']) {
+        return 4;
+    }
+    return 8;
+}
+
 function useUberschuss(amount) {
     let remaining = amount;
     // Use Überschuss from cards that have it available
@@ -2313,11 +2323,12 @@ function applyCardEffects(card) {
 
                 // If not enough Überschuss, ask user for confirmation
                 if (gridPowerNeeded > 0) {
+                    const effectiveGridCO2 = getEffectiveGridPowerCO2();
                     const confirmMessage = `⚠️ Nicht genügend Überschuss!\n\n` +
                         `Benötigt: ${stonesToAdd} Überschuss\n` +
                         `Verfügbar: ${totalAvailable} Überschuss\n` +
                         `Fehlend: ${gridPowerNeeded} Steine\n\n` +
-                        `Möchten Sie stattdessen ${gridPowerNeeded} Netzstrom-Steine (je 8t CO₂) zum Stromturm hinzufügen?\n\n` +
+                        `Möchten Sie stattdessen ${gridPowerNeeded} Netzstrom-Steine (je ${effectiveGridCO2}t CO₂) zum Stromturm hinzufügen?\n\n` +
                         `Diese können später automatisch durch Überschuss ersetzt werden, wenn mehr verfügbar wird.`;
 
                     if (!confirm(confirmMessage)) {
@@ -2397,7 +2408,8 @@ function applyCardEffects(card) {
                     log(`  Nutze ${actuallyUsed} Überschuss → ${cleanEnergyCount} ${toType.name} Steine (0t CO₂)`);
                 }
                 if (gridPowerCount > 0) {
-                    log(`  Nicht genug Überschuss → ${gridPowerCount} Netzstrom Steine (8t CO₂) [kann später optimiert werden]`);
+                    const effectiveGridCO2 = getEffectiveGridPowerCO2();
+                    log(`  Nicht genug Überschuss → ${gridPowerCount} Netzstrom Steine (${effectiveGridCO2}t CO₂) [kann später optimiert werden]`);
                 }
             }
             // Check if we should use H₂ Überschuss (for Wasserstoff vehicles - NO grid fallback!)
@@ -2497,7 +2509,7 @@ function applyCardEffects(card) {
             // For type 'ANY', prioritize removing high-CO2 stones first (GRID_POWER, GAS, DIESEL)
             // This ensures efficiency cards actually reduce CO2, not just remove renewable stones
             if (effect.type === 'ANY') {
-                // Priority order: GRID_POWER (8 CO2), DIESEL (5 CO2), GAS (4 CO2), then others
+                // Priority order: GRID_POWER, DIESEL, GAS (highest effective CO2 first)
                 const priorityTypes = ['GRID_POWER', 'DIESEL', 'GAS'];
 
                 for (const priorityType of priorityTypes) {
@@ -2506,7 +2518,14 @@ function applyCardEffects(card) {
                             const stone = tower.splice(i, 1)[0];
                             removedStones.push({ id: stone.id, type: stone.type, originCardId: stone.originCardId });
                             removed++;
-                            log(`  -1 ${stone.name} Stein (${stone.co2}t CO₂)`);
+                            // Calculate effective CO2 for display
+                            let effectiveCO2 = stone.co2;
+                            if (stone.type === 'GRID_POWER') {
+                                effectiveCO2 = getEffectiveGridPowerCO2();
+                            } else if (stone.type === 'GAS' && gameState.playedCards['biomethan']) {
+                                effectiveCO2 = 3;
+                            }
+                            log(`  -1 ${stone.name} Stein (${effectiveCO2}t CO₂)`);
                         }
                     }
                 }
