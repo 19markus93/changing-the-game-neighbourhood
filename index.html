@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Changing the Game - Neighbourhood (Online)</title>
+    <link rel="stylesheet" href="styles.css?v=2">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1>CHANGING THE GAME</h1>
+            <h2>NEIGHBOURHOOD</h2>
+            <div id="game-info">
+                <div id="round-info">Runde: <span id="current-round">Start</span></div>
+                <div id="timer">Zeit: <span id="time-remaining">--:--</span></div>
+                <div id="faulis-count">Faulis: <span id="faulis">0</span></div>
+                <div id="uberschuss-count" title="Verfügbarer Überschuss aus Solarenergie">Überschuss: <span id="uberschuss">0</span></div>
+                <div id="h2-count" title="Verfügbarer H₂ Überschuss aus Wasserstofferzeugung für Wasserstoff-Fahrzeuge">H₂ Überschuss: <span id="hydrogen">0</span></div>
+            </div>
+        </header>
+
+        <main>
+            <!-- Game Board Section -->
+            <section id="board-section">
+                <div id="game-board">
+                    <!-- Energy Towers on Board (top-left grey area) -->
+                    <div id="board-towers">
+                        <div class="board-tower-item">
+                            <span class="tower-label">Mobilität:</span>
+                            <span id="mobility-count" class="tower-value">0</span>
+                            <span class="tower-unit">Steine</span>
+                            <span id="mobility-breakdown" class="tower-breakdown"></span>
+                        </div>
+                        <div class="board-tower-item">
+                            <span class="tower-label">Wärme:</span>
+                            <span id="heat-count" class="tower-value">0</span>
+                            <span class="tower-unit">Steine</span>
+                            <span id="heat-breakdown" class="tower-breakdown"></span>
+                        </div>
+                        <div class="board-tower-item">
+                            <span class="tower-label">Strom:</span>
+                            <span id="electricity-count" class="tower-value">0</span>
+                            <span class="tower-unit">Steine</span>
+                            <span id="electricity-breakdown" class="tower-breakdown"></span>
+                        </div>
+                    </div>
+
+                    <!-- Kosten Display (separate) -->
+                    <div id="board-kosten">
+                        <div class="board-tower-item">
+                            <span class="tower-label">Kosten:</span>
+                            <span id="cost-count" class="tower-value">0</span>
+                            <span class="tower-unit">€</span>
+                        </div>
+                    </div>
+
+                    <!-- Hidden tower containers for stone visualization (kept for future use) -->
+                    <div id="towers-container" style="display: none;">
+                        <div class="tower-wrapper">
+                            <div id="mobility-tower" class="tower" data-sector="mobility"></div>
+                        </div>
+                        <div class="tower-wrapper">
+                            <div id="heat-tower" class="tower" data-sector="heat"></div>
+                        </div>
+                        <div class="tower-wrapper">
+                            <div id="electricity-tower" class="tower" data-sector="electricity"></div>
+                        </div>
+                        <div class="tower-wrapper">
+                            <div id="cost-tower" class="tower" data-sector="cost"></div>
+                        </div>
+                    </div>
+
+                    <!-- Zielkarten on Board -->
+                    <div id="zielkarten-container">
+                        <div class="zielkarte-slot" data-round="0">
+                            <div class="zielkarte-label">Start 2023</div>
+                            <img src="VorderseitenEinzeln/Ziel_Start_2023.png" alt="Ziel Start 2023" class="zielkarte-img zielkarte-front">
+                            <img src="RueckseitenEinzeln/Ziel_Start_2023.png" alt="Rückseite" class="zielkarte-img zielkarte-back">
+                        </div>
+                        <div class="zielkarte-slot" data-round="1">
+                            <div class="zielkarte-label">Runde 1 (2030)</div>
+                            <img src="VorderseitenEinzeln/Ziel_2030.png" alt="Ziel 2030" class="zielkarte-img zielkarte-front">
+                            <img src="RueckseitenEinzeln/Ziel_2030.png" alt="Rückseite" class="zielkarte-img zielkarte-back">
+                        </div>
+                        <div class="zielkarte-slot" data-round="2">
+                            <div class="zielkarte-label">Runde 2 (2035)</div>
+                            <img src="VorderseitenEinzeln/Ziel_2035.png" alt="Ziel 2035" class="zielkarte-img zielkarte-front">
+                            <img src="RueckseitenEinzeln/Ziel_2035.png" alt="Rückseite" class="zielkarte-img zielkarte-back">
+                        </div>
+                        <div class="zielkarte-slot" data-round="3">
+                            <div class="zielkarte-label">Runde 3 (2040)</div>
+                            <img src="VorderseitenEinzeln/Ziel_2040.png" alt="Ziel 2040" class="zielkarte-img zielkarte-front">
+                            <img src="RueckseitenEinzeln/Ziel_2040.png" alt="Rückseite" class="zielkarte-img zielkarte-back">
+                        </div>
+                    </div>
+
+                    <!-- Current Values Display -->
+                    <div id="current-values">
+                        <div class="current-value">Mobilität: <span id="current-mobility">0</span></div>
+                        <div class="current-value">Alle Türme: <span id="current-total">0</span></div>
+                        <div class="current-value">CO₂: <span id="current-co2">0</span> t</div>
+                    </div>
+                    <!-- Tower Breakdown Display -->
+                    <div id="tower-breakdown">
+                        <div class="breakdown-title">Stein-Übersicht:</div>
+                        <div class="tower-detail">
+                            <span class="tower-name">Mobilität:</span>
+                            <span id="mobility-breakdown" class="tower-stones">0 Steine</span>
+                        </div>
+                        <div class="tower-detail">
+                            <span class="tower-name">Wärme:</span>
+                            <span id="heat-breakdown" class="tower-stones">0 Steine</span>
+                        </div>
+                        <div class="tower-detail">
+                            <span class="tower-name">Strom:</span>
+                            <span id="electricity-breakdown" class="tower-stones">0 Steine</span>
+                        </div>
+                    </div>
+                    <!-- CO2 Impact Display -->
+                    <div id="co2-impact">
+                        <span class="impact-neutral">Letzte Aktion: -<br>CO₂: ±0t</span>
+                    </div>
+                    <!-- Stromnetz -->
+                    <div class="field-slot required" data-field="stromnetz">
+                        <div class="field-label">Stromnetz <span class="field-limit">(0/1)</span></div>
+                        <div class="card-slot"></div>
+                    </div>
+                    <!-- Heizungsraum -->
+                    <div class="field-slot required" data-field="heizung">
+                        <div class="field-label">Heizungsraum <span class="field-limit">(0/1)</span></div>
+                        <div class="card-slot-multiple"></div>
+                    </div>
+                    <!-- Garage -->
+                    <div class="field-slot required" data-field="garage">
+                        <div class="field-label">Garage <span class="field-limit">(0/4)</span></div>
+                        <div class="card-slot-multiple"></div>
+                    </div>
+                    <!-- Fahrrad -->
+                    <div class="field-slot required" data-field="fahrrad">
+                        <div class="field-label">Fahrrad <span class="field-limit">(0/2)</span></div>
+                        <div class="card-slot-multiple"></div>
+                    </div>
+
+                    <!-- Stromzähler -->
+                    <div class="field-slot required" data-field="stromzaehler">
+                        <div class="field-label">Stromzähler <span class="field-limit">(0/1)</span></div>
+                        <div class="card-slot"></div>
+                    </div>
+                    <!-- Dach (optional, max 2) -->
+                    <div class="field-slot optional" data-field="dach">
+                        <div class="field-label">Dach <span class="field-limit">(0/2)</span></div>
+                        <div class="card-slot-multiple"></div>
+                    </div>
+                    <!-- Haustechnik (optional, unlimited) -->
+                    <div class="field-slot optional" data-field="haustechnik">
+                        <div class="field-label">Haustechnik <span class="field-limit">(0/∞)</span></div>
+                        <div class="card-slot-multiple"></div>
+                    </div>
+                    <!-- Nachbarschaftsanlage (optional, max 5) -->
+                    <div class="field-slot optional" data-field="nachbarschaft">
+                        <div class="field-label">Nachbarschaftsgarage <span class="field-limit">(0/5)</span></div>
+                        <div class="card-slot-multiple"></div>
+                    </div>
+                    <!-- Balkon (optional, max 1) -->
+                    <div class="field-slot optional" data-field="balkon">
+                        <div class="field-label">Balkon <span class="field-limit">(0/1)</span></div>
+                        <div class="card-slot-multiple"></div>
+                    </div>
+                    <!-- Komfort (optional, unlimited) -->
+                    <div class="field-slot optional" data-field="komfort">
+                        <div class="field-label">Komfort <span class="field-limit">(0/∞)</span></div>
+                        <div class="card-slot-multiple"></div>
+                    </div>
+                    <!-- Technikinsel (optional, max 5) -->
+                    <div class="field-slot optional" data-field="technikinsel">
+                        <div class="field-label">Technikinsel <span class="field-limit">(0/5)</span></div>
+                        <div class="card-slot-multiple"></div>
+                    </div>
+                </div>
+
+                <!-- Player Hand Section - Right side of board -->
+                <aside id="hand-section">
+                    <h3>Handkarten</h3>
+                    <div class="hand-subsection">
+                        <h4>Nicht gespielt</h4>
+                        <div id="player-hand-unplayed"></div>
+                    </div>
+                    <div class="hand-subsection">
+                        <h4>Gespielt (wieder spielbar)</h4>
+                        <div id="player-hand-played"></div>
+                    </div>
+                </aside>
+            </section>
+
+            <!-- Control Panel -->
+            <section id="controls">
+                <button id="start-game" class="btn btn-primary">Spiel starten</button>
+                <button id="end-round" class="btn btn-secondary" style="display:none;">Runde beenden</button>
+                <button id="check-goals" class="btn btn-info">Ziele überprüfen</button>
+            </section>
+        </main>
+
+        <!-- Notification container -->
+        <div id="notification-container"></div>
+
+        <!-- Overlay for card details -->
+        <div id="card-overlay" class="overlay" style="display:none;">
+            <div class="overlay-content">
+                <span class="close">&times;</span>
+                <div id="card-detail"></div>
+                <div id="card-actions">
+                    <button id="play-card" class="btn btn-primary">Karte ausspielen</button>
+                    <button id="cancel-card" class="btn btn-secondary">Abbrechen</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Log Section -->
+        <section id="log-section">
+            <h3>Spielverlauf</h3>
+            <div id="game-log"></div>
+        </section>
+    </div>
+
+    <script src="game.js?v=7"></script>
+</body>
+</html>
