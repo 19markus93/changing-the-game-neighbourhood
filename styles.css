@@ -519,95 +519,126 @@ section h3 {
     border-style: dashed;
 }
 
-/* Position field slots over the actual labeled areas on the game board */
+/* ============================================
+   FREE CARD BOXES - All individually positionable
+   Edit these positions to match your board!
+   ============================================ */
 
-/* Stromnetz - left side near power lines/infrastructure */
-.field-slot[data-field="stromnetz"] {
-    top: 40%;
-    left: 6.5%;
-    width: 65px;
-    height: 140px;
+.free-card-box {
+    position: absolute;
+    width: 75px;
+    height: 120px;
+    border: 2px dashed rgba(255, 152, 0, 0.8);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    z-index: 5;
 }
 
-/* Heizungsraum - inside house, lower left room (orange label visible) */
-.field-slot[data-field="heizung"] {
-    bottom: 6%;
-    left: 42%;
-    width: 80px;
-    height: 140px;
+.free-card-box:hover {
+    border-color: var(--primary-blue);
+    background: rgba(227, 242, 253, 0.9);
+    transform: scale(1.05);
 }
 
-/* Garage - inside house, right side ground floor with car visible */
-.field-slot[data-field="garage"] {
-    bottom: 6%;
-    left: 78%;
-    width: 65px;
-    height: 140px;
+.free-card-box.filled {
+    border-style: solid;
+    border-color: var(--success-green);
+    background: rgba(76, 175, 80, 0.2);
 }
 
-/* Garage - inside house, right side ground floor with car visible */
-.field-slot[data-field="fahrrad"] {
-    bottom: 6%;
-    left: 86%;
-    width: 65px;
-    height: 140px;
+.free-card-box .mini-card {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
 }
 
-/* Stromzähler - bottom area near electrical meter */
-.field-slot[data-field="stromzaehler"] {
-    bottom: 6%;
-    left: 48.5%;
-    width: 65px;
-    height: 140px;
+.free-card-box .mini-card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 3px;
 }
 
-/* Dach - roof area with visible solar panels (red roof with blue panels) */
-.field-slot[data-field="dach"] {
-    top: 40%;
-    left: 62%;
-    width: 65px;
-    height: 140px;
-}
+/* ---- FIELD BORDER COLORS ---- */
+.free-card-box[data-field="stromnetz"]    { border-color: #000000; }  /* black */
+.free-card-box[data-field="heizung"]      { border-color: #cf4e26; }  /* burnt orange */
+.free-card-box[data-field="garage"]       { border-color: #5a330e; }  /* brown */
+.free-card-box[data-field="fahrrad"]      { border-color: #925505; }  /* amber brown */
+.free-card-box[data-field="stromzaehler"] { border-color: #f5550b; }  /* orange-red */
+.free-card-box[data-field="dach"]         { border-color: #b61313; }  /* dark red */
+.free-card-box[data-field="haustechnik"]  { border-color: #a855f7; }  /* purple */
+.free-card-box[data-field="nachbarschaft"]{ border-color: #3b82f6; }  /* blue */
+.free-card-box[data-field="balkon"]       { border-color: #8d0f0f; }  /* dark red */
+.free-card-box[data-field="komfort"]      { border-color: #1adafc; }  /* cyan */
+.free-card-box[data-field="technikinsel"] { border-color: #e4d509; }  /* yellow */
 
-/* Haustechnik - inside house middle ground floor (labeled area) */
-.field-slot[data-field="haustechnik"] {
-    bottom: 6%;
-    left: 66%;
-    width: 65px;
-    height: 140px;
-}
+/* ---- Z-INDEX ORDERING (0 = front, 4 = back) ---- */
+.free-card-box[data-slot="0"] { z-index: 15; }
+.free-card-box[data-slot="1"] { z-index: 14; }
+.free-card-box[data-slot="2"] { z-index: 13; }
+.free-card-box[data-slot="3"] { z-index: 12; }
+.free-card-box[data-slot="4"] { z-index: 11; }
 
-/* Nachbarschaftsgarage - far right with P parking symbol */
-.field-slot[data-field="nachbarschaft"] {
-    top: 32%;
-    left: 87%;
-    width: 65px;
-    height: 140px;
-}
+/* ---- STROMNETZ (1 box) ---- */
+#stromnetz-0 { top: 40%; left: 6.5%; }
 
-/* Balkon - right side exterior of house (labeled "Balkon") */
-.field-slot[data-field="balkon"] {
-    top: 61%;
-    left: 74%;
-    width: 65px;
-    height: 140px;
-}
+/* ---- HEIZUNG (1 box) ---- */
+#heizung-0 { bottom: 6.5%; left: 42%; }
 
-/* Komfort - inside house upper floor living area (couch/living room visible) */
-.field-slot[data-field="komfort"] {
-    top: 60%;
-    left: 59%;
-    width: 65px;
-    height: 140px;
-}
+/* ---- GARAGE (5 boxes) ---- */
+#garage-0 { bottom: 6.5%; left: 78%; }
+#garage-1 { bottom: 6.5%; left: 76.5%; }
+#garage-2 { bottom: 6.5%; left: 75%; }
+#garage-3 { bottom: 6.5%; left: 73.5%; }
+#garage-4 { bottom: 6.5%; left: 72%; }
 
-/* Technikinsel - far left side with wind turbine */
-.field-slot[data-field="technikinsel"] {
-    bottom: 21%;
-    left: 4%;
-    width: 65px;
-    height: 140px;
-}
+/* ---- FAHRRAD (2 boxes) ---- */
+#fahrrad-0 { bottom: 6.5%; left: 86.5%; }
+#fahrrad-1 { bottom: 6.5%; left: 85%; }
+
+/* ---- STROMZAEHLER (1 box) ---- */
+#stromzaehler-0 { bottom: 6.5%; left: 48.5%; }
+
+/* ---- DACH (2 boxes) ---- */
+#dach-0 { top: 40%; left: 62%; }
+#dach-1 { top: 40%; left: 68%; }
+
+/* ---- HAUSTECHNIK (5 boxes) ---- */
+#haustechnik-0 { bottom: 6.5%; left: 66%; }
+#haustechnik-1 { bottom: 6.5%; left: 64%; }
+#haustechnik-2 { bottom: 6.5%; left: 62%; }
+#haustechnik-3 { bottom: 6.5%; left: 60%; }
+#haustechnik-4 { bottom: 6.5%; left: 58%; }
+
+/* ---- NACHBARSCHAFT (5 boxes) ---- */
+#nachbarschaft-0 { top: 32%; left: 80.7%; }
+#nachbarschaft-1 { top: 32%; left: 87.2%; }
+#nachbarschaft-2 { top: 32%; left: 93.7%; }
+#nachbarschaft-3 { top: 47%; left: 84%; }
+#nachbarschaft-4 { top: 47%; left: 90.3%; }
+
+/* ---- BALKON (1 box) ---- */
+#balkon-0 { top: 60.5%; left: 74.5%; }
+
+/* ---- KOMFORT (5 boxes) ---- */
+#komfort-0 { top: 60.2%; left: 59%; }
+#komfort-1 { top: 60.2%; left: 57%; }
+#komfort-2 { top: 60.2%; left: 55%; }
+#komfort-3 { top: 60.2%; left: 53%; }
+#komfort-4 { top: 60.2%; left: 51%; }
+
+/* ---- TECHNIKINSEL (5 boxes) ---- */
+#technikinsel-0 { bottom: 21.5%; left: 4%; }
+#technikinsel-1 { bottom: 21.5%; left: 10.5%; }
+#technikinsel-2 { bottom: 6%; left: 4%; }
+#technikinsel-3 { bottom: 6%; left: 10.5%; }
+#technikinsel-4 { bottom: 14%; left: 17%; }
 
 .field-label {
     font-weight: bold;
@@ -655,6 +686,54 @@ section h3 {
 .card-slot:not(:empty), .card-slot-multiple:not(:empty) {
     border-style: solid;
     background: rgba(76, 175, 80, 0.1);
+}
+
+/* Individual card boxes within slots */
+.card-box {
+    width: 40px;
+    height: 56px;
+    border: 1px dashed rgba(0,0,0,0.3);
+    border-radius: 3px;
+    margin: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.5);
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+
+.card-box:hover {
+    border-color: var(--primary-blue);
+    background: rgba(227, 242, 253, 0.7);
+}
+
+.card-box.filled {
+    border-style: solid;
+    border-color: var(--success-green);
+    background: rgba(76, 175, 80, 0.15);
+}
+
+.card-box .mini-card {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.card-box .mini-card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Adjust card-slot-multiple to use flex-wrap for boxes */
+.card-slot-multiple {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    padding: 2px;
+    align-content: flex-start;
 }
 
 /* Mini cards displayed on board */

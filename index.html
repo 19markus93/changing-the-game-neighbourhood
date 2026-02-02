@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Changing the Game - Neighbourhood (Online)</title>
-    <link rel="stylesheet" href="styles.css?v=2">
+    <link rel="stylesheet" href="styles.css?v=7">
 </head>
 <body>
     <div id="app">
@@ -105,62 +105,65 @@
                     <div id="co2-impact">
                         <span class="impact-neutral">Letzte Aktion: -<br>CO₂: ±0t</span>
                     </div>
-                    <!-- Stromnetz -->
-                    <div class="field-slot required" data-field="stromnetz">
-                        <div class="field-label">Stromnetz <span class="field-limit">(0/1)</span></div>
-                        <div class="card-slot"></div>
-                    </div>
-                    <!-- Heizungsraum -->
-                    <div class="field-slot required" data-field="heizung">
-                        <div class="field-label">Heizungsraum <span class="field-limit">(0/1)</span></div>
-                        <div class="card-slot-multiple"></div>
-                    </div>
-                    <!-- Garage -->
-                    <div class="field-slot required" data-field="garage">
-                        <div class="field-label">Garage <span class="field-limit">(0/4)</span></div>
-                        <div class="card-slot-multiple"></div>
-                    </div>
-                    <!-- Fahrrad -->
-                    <div class="field-slot required" data-field="fahrrad">
-                        <div class="field-label">Fahrrad <span class="field-limit">(0/2)</span></div>
-                        <div class="card-slot-multiple"></div>
-                    </div>
+                    <!-- ============================================
+                         FREE CARD BOXES - All individually positionable
+                         Edit positions in styles.css
+                         ============================================ -->
 
-                    <!-- Stromzähler -->
-                    <div class="field-slot required" data-field="stromzaehler">
-                        <div class="field-label">Stromzähler <span class="field-limit">(0/1)</span></div>
-                        <div class="card-slot"></div>
-                    </div>
-                    <!-- Dach (optional, max 2) -->
-                    <div class="field-slot optional" data-field="dach">
-                        <div class="field-label">Dach <span class="field-limit">(0/2)</span></div>
-                        <div class="card-slot-multiple"></div>
-                    </div>
-                    <!-- Haustechnik (optional, unlimited) -->
-                    <div class="field-slot optional" data-field="haustechnik">
-                        <div class="field-label">Haustechnik <span class="field-limit">(0/∞)</span></div>
-                        <div class="card-slot-multiple"></div>
-                    </div>
-                    <!-- Nachbarschaftsanlage (optional, max 5) -->
-                    <div class="field-slot optional" data-field="nachbarschaft">
-                        <div class="field-label">Nachbarschaftsgarage <span class="field-limit">(0/5)</span></div>
-                        <div class="card-slot-multiple"></div>
-                    </div>
-                    <!-- Balkon (optional, max 1) -->
-                    <div class="field-slot optional" data-field="balkon">
-                        <div class="field-label">Balkon <span class="field-limit">(0/1)</span></div>
-                        <div class="card-slot-multiple"></div>
-                    </div>
-                    <!-- Komfort (optional, unlimited) -->
-                    <div class="field-slot optional" data-field="komfort">
-                        <div class="field-label">Komfort <span class="field-limit">(0/∞)</span></div>
-                        <div class="card-slot-multiple"></div>
-                    </div>
-                    <!-- Technikinsel (optional, max 5) -->
-                    <div class="field-slot optional" data-field="technikinsel">
-                        <div class="field-label">Technikinsel <span class="field-limit">(0/5)</span></div>
-                        <div class="card-slot-multiple"></div>
-                    </div>
+                    <!-- Stromnetz (1 box) -->
+                    <div class="free-card-box" data-field="stromnetz" data-slot="0" id="stromnetz-0"></div>
+
+                    <!-- Heizungsraum (1 box) -->
+                    <div class="free-card-box" data-field="heizung" data-slot="0" id="heizung-0"></div>
+
+                    <!-- Garage (5 boxes) -->
+                    <div class="free-card-box" data-field="garage" data-slot="0" id="garage-0"></div>
+                    <div class="free-card-box" data-field="garage" data-slot="1" id="garage-1"></div>
+                    <div class="free-card-box" data-field="garage" data-slot="2" id="garage-2"></div>
+                    <div class="free-card-box" data-field="garage" data-slot="3" id="garage-3"></div>
+                    <div class="free-card-box" data-field="garage" data-slot="4" id="garage-4"></div>
+
+                    <!-- Fahrrad (2 boxes) -->
+                    <div class="free-card-box" data-field="fahrrad" data-slot="0" id="fahrrad-0"></div>
+                    <div class="free-card-box" data-field="fahrrad" data-slot="1" id="fahrrad-1"></div>
+
+                    <!-- Stromzähler (1 box) -->
+                    <div class="free-card-box" data-field="stromzaehler" data-slot="0" id="stromzaehler-0"></div>
+
+                    <!-- Dach (2 boxes) -->
+                    <div class="free-card-box" data-field="dach" data-slot="0" id="dach-0"></div>
+                    <div class="free-card-box" data-field="dach" data-slot="1" id="dach-1"></div>
+
+                    <!-- Haustechnik (5 boxes) -->
+                    <div class="free-card-box" data-field="haustechnik" data-slot="0" id="haustechnik-0"></div>
+                    <div class="free-card-box" data-field="haustechnik" data-slot="1" id="haustechnik-1"></div>
+                    <div class="free-card-box" data-field="haustechnik" data-slot="2" id="haustechnik-2"></div>
+                    <div class="free-card-box" data-field="haustechnik" data-slot="3" id="haustechnik-3"></div>
+                    <div class="free-card-box" data-field="haustechnik" data-slot="4" id="haustechnik-4"></div>
+
+                    <!-- Nachbarschaft (5 boxes) -->
+                    <div class="free-card-box" data-field="nachbarschaft" data-slot="0" id="nachbarschaft-0"></div>
+                    <div class="free-card-box" data-field="nachbarschaft" data-slot="1" id="nachbarschaft-1"></div>
+                    <div class="free-card-box" data-field="nachbarschaft" data-slot="2" id="nachbarschaft-2"></div>
+                    <div class="free-card-box" data-field="nachbarschaft" data-slot="3" id="nachbarschaft-3"></div>
+                    <div class="free-card-box" data-field="nachbarschaft" data-slot="4" id="nachbarschaft-4"></div>
+
+                    <!-- Balkon (1 box) -->
+                    <div class="free-card-box" data-field="balkon" data-slot="0" id="balkon-0"></div>
+
+                    <!-- Komfort (5 boxes) -->
+                    <div class="free-card-box" data-field="komfort" data-slot="0" id="komfort-0"></div>
+                    <div class="free-card-box" data-field="komfort" data-slot="1" id="komfort-1"></div>
+                    <div class="free-card-box" data-field="komfort" data-slot="2" id="komfort-2"></div>
+                    <div class="free-card-box" data-field="komfort" data-slot="3" id="komfort-3"></div>
+                    <div class="free-card-box" data-field="komfort" data-slot="4" id="komfort-4"></div>
+
+                    <!-- Technikinsel (5 boxes) -->
+                    <div class="free-card-box" data-field="technikinsel" data-slot="0" id="technikinsel-0"></div>
+                    <div class="free-card-box" data-field="technikinsel" data-slot="1" id="technikinsel-1"></div>
+                    <div class="free-card-box" data-field="technikinsel" data-slot="2" id="technikinsel-2"></div>
+                    <div class="free-card-box" data-field="technikinsel" data-slot="3" id="technikinsel-3"></div>
+                    <div class="free-card-box" data-field="technikinsel" data-slot="4" id="technikinsel-4"></div>
                 </div>
 
                 <!-- Player Hand Section - Right side of board -->
@@ -207,6 +210,6 @@
         </section>
     </div>
 
-    <script src="game.js?v=7"></script>
+    <script src="game.js?v=10"></script>
 </body>
 </html>

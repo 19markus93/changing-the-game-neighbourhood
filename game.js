@@ -53,13 +53,12 @@ const FIELD_LIMITS = {
     // Required fields with mandatory cards
     stromnetz: { max: 1, required: true, description: 'Stromnetz' },
 
-    // Heizungsraum has two mandatory card types
+    // Heizungsraum has one heating card
     heizung: {
-        max: 2,
+        max: 1,
         required: true,
         description: 'Heizungsraum',
-        heatingLimit: 1,  // 1 heating card (Heizung, Wärmepumpe, etc.) - replaceable
-        meterLimit: 1     // 1 meter card (Stromzähler, Smart Meter, etc.) - replaceable
+        heatingLimit: 1  // 1 heating card (Heizung, Wärmepumpe, etc.) - replaceable
     },
 
     // Garage handling - we'll track card types
@@ -83,9 +82,9 @@ const FIELD_LIMITS = {
     balkon: { max: 1, required: false, description: 'Balkon' },
     nachbarschaft: { max: 5, required: false, description: 'Nachbarschaftsgarage' },
 
-    // Unlimited fields
-    komfort: { max: Infinity, required: false, description: 'Komfort' },
-    haustechnik: { max: Infinity, required: false, description: 'Haustechnik' }
+    // Limited fields (5 card slots each)
+    komfort: { max: 5, required: false, description: 'Komfort' },
+    haustechnik: { max: 5, required: false, description: 'Haustechnik' }
 };
 
 // Starter Cards - Data from PDF Spielkarten Vorderseiten
@@ -1727,7 +1726,7 @@ function updateFieldLimitDisplays() {
                     const c = gameState.playedCards[cardId];
                     return c && isHeatingCard(c);
                 }).length : 0;
-            limitSpan.textContent = `(Heizung: ${heatingCardsInRoom}/${limit.heatingLimit})`
+            limitSpan.textContent = `(${heatingCardsInRoom}/${limit.heatingLimit})`;
         }
         if (fieldName === 'stromzaehler') {
             const meterCardsInRoom = gameState.fieldOccupancy[fieldName] ?
@@ -1736,7 +1735,7 @@ function updateFieldLimitDisplays() {
                     return c && isMeterCard(c);
                 }).length : 0;
 
-            limitSpan.textContent = `(Zähler: ${meterCardsInRoom}/${limit.meterLimit})`;
+            limitSpan.textContent = `(${meterCardsInRoom}/${limit.max})`;
         }
 
         // Special handling for garage
@@ -1764,17 +1763,11 @@ function updateFieldLimitDisplays() {
 }
 
 function addCardToBoard(card) {
-    // Find the appropriate field slot
-    const fieldSlot = document.querySelector(`.field-slot[data-field="${card.field}"]`);
-    if (!fieldSlot) return;
-
-    const cardSlot = fieldSlot.querySelector('.card-slot, .card-slot-multiple');
-    if (!cardSlot) return;
-
     // Create mini card element with image
     const miniCard = document.createElement('div');
     miniCard.className = 'mini-card';
     miniCard.title = card.name;
+    miniCard.dataset.cardId = card.id;
 
     if (card.image) {
         const img = document.createElement('img');
@@ -1793,10 +1786,18 @@ function addCardToBoard(card) {
         showPlayedCardDetail(card);
     });
 
-    cardSlot.appendChild(miniCard);
-
-    // Update field limit displays
-    updateFieldLimitDisplays();
+    // Find an empty free-card-box for this field
+    const freeBoxes = document.querySelectorAll(`.free-card-box[data-field="${card.field}"]`);
+    for (const box of freeBoxes) {
+        if (!box.classList.contains('filled')) {
+            box.appendChild(miniCard);
+            box.classList.add('filled');
+            updateFieldLimitDisplays();
+            return;
+        }
+    }
+    // No empty box found
+    console.warn(`No empty box found for field: ${card.field}`);
 }
 
 // Build a summary of what a card costs/provides for notifications
@@ -3173,22 +3174,17 @@ function removeCardWithoutDependencyCheck(card) {
 }
 
 function removeCardFromBoard(card) {
-    const fieldSlot = document.querySelector(`.field-slot[data-field="${card.field}"]`);
-    if (!fieldSlot) return;
-
-    const cardSlot = fieldSlot.querySelector('.card-slot, .card-slot-multiple');
-    if (!cardSlot) return;
-
-    // Find and remove the mini card
-    const miniCards = cardSlot.querySelectorAll('.mini-card');
-    miniCards.forEach(miniCard => {
-        if (miniCard.title === card.name) {
+    // Find and remove from free-card-box
+    const freeBoxes = document.querySelectorAll(`.free-card-box[data-field="${card.field}"]`);
+    for (const box of freeBoxes) {
+        const miniCard = box.querySelector('.mini-card');
+        if (miniCard && (miniCard.title === card.name || miniCard.dataset.cardId === card.id)) {
+            box.classList.remove('filled');
             miniCard.remove();
+            updateFieldLimitDisplays();
+            return;
         }
-    });
-
-    // Update field limit displays
-    updateFieldLimitDisplays();
+    }
 }
 
 function updateCurrentValues() {
